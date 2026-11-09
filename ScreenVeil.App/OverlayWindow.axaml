@@ -1,0 +1,72 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:app="using:ScreenVeil.App"
+        x:Class="ScreenVeil.App.OverlayWindow"
+        x:DataType="app:OverlayItemViewModel"
+        Width="320"
+        Height="150"
+        MinWidth="1"
+        MinHeight="1"
+        CanResize="False"
+        WindowDecorations="None"
+        Topmost="True"
+        ShowActivated="False"
+        ShowInTaskbar="False"
+        TransparencyLevelHint="Transparent"
+        Background="Transparent"
+        PointerMoved="OnPointerMoved"
+        PointerReleased="OnPointerReleased">
+    <Grid>
+        <Grid Width="{Binding Width}"
+              Height="{Binding Height}"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              RenderTransformOrigin="50%,50%">
+            <Grid.RenderTransform>
+                <RotateTransform Angle="{Binding Rotation}" />
+            </Grid.RenderTransform>
+            <Border Background="{Binding Background}"
+                    BorderBrush="#4A514C"
+                    BorderThickness="1">
+                <Grid>
+                    <Border Background="Transparent" PointerPressed="OnMovePointerPressed" />
+                    <Border Width="6" HorizontalAlignment="Left" Background="Transparent" Tag="West" PointerPressed="OnResizePointerPressed" />
+                    <Border Width="6" HorizontalAlignment="Right" Background="Transparent" Tag="East" PointerPressed="OnResizePointerPressed" />
+                    <Border Height="6" VerticalAlignment="Top" Background="Transparent" Tag="North" PointerPressed="OnResizePointerPressed" />
+                    <Border Height="6" VerticalAlignment="Bottom" Background="Transparent" Tag="South" PointerPressed="OnResizePointerPressed" />
+                    <Border Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" Tag="NorthWest" PointerPressed="OnResizePointerPressed" />
+                    <Border Width="14" Height="14" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Tag="NorthEast" PointerPressed="OnResizePointerPressed" />
+                    <Border Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="Transparent" Tag="SouthWest" PointerPressed="OnResizePointerPressed" />
+                    <Border Width="22"
+                            Height="22"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Background="#252A27"
+                            BorderBrush="#717B74"
+                            BorderThickness="1,1,0,0"
+                            Tag="SouthEast"
+                            PointerPressed="OnResizePointerPressed">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Text="+" />
+                    </Border>
+                    <Border Width="22"
+                            Height="22"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Margin="0,3,0,0"
+                            Background="#252A27"
+                            BorderBrush="#717B74"
+                            BorderThickness="1"
+                            CornerRadius="11"
+                            ToolTip.Tip="Drag to rotate"
+                            PointerPressed="OnRotatePointerPressed">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="11"
+                                   FontWeight="Bold"
+                                   Text="R" />
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

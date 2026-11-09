@@ -1,0 +1,119 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:app="using:ScreenVeil.App"
+        mc:Ignorable="d"
+        x:Class="ScreenVeil.App.MainWindow"
+        x:DataType="app:MainWindowViewModel"
+        Title="ScreenVeil"
+        Width="520"
+        Height="560"
+        MinWidth="440"
+        MinHeight="360"
+        Background="#111412"
+        Foreground="#F3F4EF">
+    <Grid Margin="20" RowDefinitions="Auto,Auto,*,Auto">
+        <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Spacing="3">
+                <TextBlock FontSize="22" FontWeight="Bold" Text="ScreenVeil" />
+                <TextBlock FontSize="12" Foreground="#9BA49D" Text="Cover. Focus. Reveal." />
+            </StackPanel>
+            <Border Grid.Column="1"
+                    Padding="10,5"
+                    VerticalAlignment="Center"
+                    Background="#173C2E"
+                    CornerRadius="12">
+                <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#7BE0A7" Text="EDIT MODE" />
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,22,0,10" ColumnDefinitions="*,Auto">
+            <TextBlock VerticalAlignment="Center" FontSize="13" FontWeight="SemiBold" Text="COVERS" />
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="#9BA49D" Text="{Binding CountText}" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <ListBox ItemsSource="{Binding Overlays}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Padding="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="app:OverlayItemViewModel">
+                        <Border Margin="0,0,0,8"
+                                Padding="12"
+                                Background="#1C201D"
+                                BorderBrush="#303732"
+                                BorderThickness="1"
+                                CornerRadius="7">
+                            <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto">
+                                <StackPanel Spacing="4" VerticalAlignment="Center">
+                                    <TextBlock FontWeight="SemiBold" Foreground="#F3F4EF" Text="{Binding Name}" />
+                                    <TextBlock FontSize="11" Foreground="#9BA49D" Text="{Binding StatusText}" />
+                                </StackPanel>
+                                <ComboBox Grid.Column="1"
+                                          Width="106"
+                                          Margin="8,0,0,0"
+                                          VerticalAlignment="Center"
+                                          Background="#2D332F"
+                                          BorderBrush="#485149"
+                                          Foreground="#F3F4EF"
+                                          ItemsSource="{Binding Palette}"
+                                          SelectedItem="{Binding SelectedColor, Mode=TwoWay}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="app:OverlayColorOption">
+                                            <StackPanel Orientation="Horizontal" Spacing="7">
+                                                <Border Width="12" Height="12" Background="{Binding Brush}" CornerRadius="3" />
+                                                <TextBlock VerticalAlignment="Center" Foreground="#F3F4EF" Text="{Binding Name}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Grid.Column="2"
+                                        Margin="6,0,0,0"
+                                        Padding="9,5"
+                                        VerticalAlignment="Center"
+                                        Background="#343B36"
+                                        Command="{Binding ToggleVisibilityCommand}"
+                                        Content="{Binding VisibilityLabel}"
+                                        Foreground="#F3F4EF" />
+                                <Button Grid.Column="3"
+                                        Margin="6,0,0,0"
+                                        Padding="9,5"
+                                        VerticalAlignment="Center"
+                                        Background="#3A2D2A"
+                                        Command="{Binding DeleteCommand}"
+                                        Content="Delete"
+                                        Foreground="#FFD3C8" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       MaxWidth="260"
+                       IsVisible="{Binding IsEmpty}"
+                       Foreground="#9BA49D"
+                       Text="No covers yet. Add one to start masking screen content."
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="0,12,0,0" ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button Padding="14,12"
+                    Background="#1A6948"
+                    Command="{Binding AddOverlayCommand}"
+                    Content="+   New cover"
+                    FontWeight="SemiBold"
+                    Foreground="#F4FFF8" />
+            <Button Grid.Column="1"
+                    Padding="14,12"
+                    Background="#252A27"
+                    Command="{Binding ToggleAllCommand}"
+                    Content="{Binding ToggleAllText}"
+                    FontWeight="SemiBold"
+                    Foreground="#F3F4EF" />
+        </Grid>
+    </Grid>
+</Window>

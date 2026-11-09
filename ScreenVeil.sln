@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenVeil.App", "ScreenVeil.App\ScreenVeil.App.csproj", "{22684F06-78E8-4CB7-8760-14636344A49A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenVeil.Core", "ScreenVeil.Core\ScreenVeil.Core.csproj", "{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenVeil.Tests", "ScreenVeil.Tests\ScreenVeil.Tests.csproj", "{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Debug|x64.Build.0 = Debug|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Debug|x86.Build.0 = Debug|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Release|x64.ActiveCfg = Release|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Release|x64.Build.0 = Release|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Release|x86.ActiveCfg = Release|Any CPU
+		{22684F06-78E8-4CB7-8760-14636344A49A}.Release|x86.Build.0 = Release|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Debug|x64.Build.0 = Debug|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Debug|x86.Build.0 = Debug|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Release|x64.ActiveCfg = Release|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Release|x64.Build.0 = Release|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Release|x86.ActiveCfg = Release|Any CPU
+		{63AEB47F-FA04-4CDA-B656-2B7B6ED36C02}.Release|x86.Build.0 = Release|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Debug|x64.Build.0 = Debug|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Debug|x86.Build.0 = Debug|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Release|x64.ActiveCfg = Release|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Release|x64.Build.0 = Release|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Release|x86.ActiveCfg = Release|Any CPU
+		{9006C0E5-A30D-42D9-90FC-DF6BE6AABFC0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
