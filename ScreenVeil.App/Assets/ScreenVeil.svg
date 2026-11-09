@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="background" x1="30" y1="20" x2="226" y2="242" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#20382F"/>
+      <stop offset="1" stop-color="#101A17"/>
+    </linearGradient>
+    <linearGradient id="veil" x1="72" y1="94" x2="190" y2="177" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8BE5B1"/>
+      <stop offset="1" stop-color="#38B878"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="62" fill="url(#background)"/>
+  <rect x="43" y="48" width="170" height="137" rx="22" fill="#E8F1EA"/>
+  <rect x="52" y="57" width="152" height="119" rx="14" fill="#14251F"/>
+  <path d="M68 85h34M68 99h23M68 113h29" fill="none" stroke="#799A88" stroke-linecap="round" stroke-width="7"/>
+  <path d="M68 137c30-36 62-42 94-24 13 7 24 11 42 5v43a15 15 0 0 1-15 15H67a15 15 0 0 1-15-15v-8c5-4 10-9 16-16Z" fill="url(#veil)"/>
+  <path d="M137 111c13 7 25 12 41 8v22c-16 5-31-1-47-10-10-6-21-9-33-6 13-15 27-20 39-14Z" fill="#C5F4D6" opacity=".8"/>
+  <path d="M128 198h28m-14-13v13" fill="none" stroke="#E8F1EA" stroke-linecap="round" stroke-width="9"/>
+  <path d="M103 211h78" fill="none" stroke="#E8F1EA" stroke-linecap="round" stroke-width="9"/>
+</svg>

@@ -6,6 +6,7 @@
         mc:Ignorable="d"
         x:Class="ScreenVeil.App.MainWindow"
         x:DataType="app:MainWindowViewModel"
+        Icon="/Assets/ScreenVeil.png"
         Title="ScreenVeil"
         Width="520"
         Height="560"
