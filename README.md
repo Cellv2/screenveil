@@ -10,6 +10,37 @@ Requires the .NET 10 SDK.
 dotnet run --project ScreenVeil.App/ScreenVeil.App.csproj
 ```
 
+## Downloads
+
+GitHub Releases provide self-contained Windows x64 and Linux x64 archives. Download
+and extract the entire archive, then run `ScreenVeil.App.exe` on Windows or
+`ScreenVeil.App` on Linux. No .NET installation is needed, though Linux still
+requires the system libraries used by .NET and Avalonia.
+
+Each release also includes `SHA256SUMS.txt`. Download it alongside the archive
+to check the download. On Linux, run this in the download directory:
+
+```sh
+sha256sum --check --ignore-missing SHA256SUMS.txt
+```
+
+On Windows, run `Get-FileHash .\ScreenVeil-win-x64.zip` in PowerShell and
+compare its SHA256 hash with the Windows entry in `SHA256SUMS.txt`. Checksums
+detect changes to a download but do not independently authenticate it.
+
+## Publishing a release
+
+After connecting this repository to GitHub, push a version tag to run tests,
+build both archives, and create a GitHub Release with generated release notes:
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+GitHub Actions must be enabled and allowed to write repository contents. The
+workflow runs for tags beginning with `v`; use a new version tag for each release.
+
 ## Run as a Windows app from WSL
 
 When launched as a Linux GUI app through WSLg, Windows controls how that window is stacked relative to native Windows apps, and may not honor the Linux topmost request. To have covers stay above Windows apps, publish a native Windows build in WSL, copy it to a Windows folder, and launch it there. This publishes a self-contained x64 app into the WSL filesystem:
