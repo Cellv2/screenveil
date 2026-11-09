@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ScreenVeil.App\ScreenVeil.App.csproj" />
     <ProjectReference Include="..\ScreenVeil.Core\ScreenVeil.Core.csproj" />
   </ItemGroup>
 

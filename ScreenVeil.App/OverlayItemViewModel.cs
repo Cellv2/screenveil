@@ -29,6 +29,7 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
     private readonly Action<OverlayItemViewModel> _onDelete;
     private OverlayConfiguration _configuration;
     private OverlayColorOption _selectedColor;
+    private double? _rotationPreview;
 
     public OverlayItemViewModel(
         OverlayConfiguration configuration,
@@ -51,7 +52,7 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
     public double Y => _configuration.Y;
     public double Width => _configuration.Width;
     public double Height => _configuration.Height;
-    public double Rotation => _configuration.Rotation;
+    public double Rotation => _rotationPreview ?? _configuration.Rotation;
     public double WindowWidth => OverlayGeometry.GetWindowSize(Width, Height, Rotation).Width;
     public double WindowHeight => OverlayGeometry.GetWindowSize(Width, Height, Rotation).Height;
     public IBrush Background => new SolidColorBrush(Color.Parse(_configuration.Color));
@@ -119,17 +120,37 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
 
     public void SetRotation(double rotation)
     {
-        if (!double.IsFinite(rotation))
+        var normalizedRotation = NormalizeRotation(rotation);
+        var hadPreview = _rotationPreview.HasValue;
+        _rotationPreview = null;
+        var updated = _configuration with { Rotation = normalizedRotation };
+        if (_configuration == updated)
         {
-            throw new ArgumentOutOfRangeException(nameof(rotation));
+            if (hadPreview)
+            {
+                NotifyRotationChanged();
+            }
+
+            return;
         }
 
-        var normalizedRotation = (rotation % 360 + 360) % 360;
         UpdateConfiguration(
-            _configuration with { Rotation = normalizedRotation },
+            updated,
             nameof(Rotation),
             nameof(WindowWidth),
             nameof(WindowHeight));
+    }
+
+    public void PreviewRotation(double rotation)
+    {
+        var normalizedRotation = NormalizeRotation(rotation);
+        if (_rotationPreview == normalizedRotation)
+        {
+            return;
+        }
+
+        _rotationPreview = normalizedRotation;
+        NotifyRotationChanged();
     }
 
     private void UpdateConfiguration(OverlayConfiguration updated, params string[] properties)
@@ -150,4 +171,21 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    private void NotifyRotationChanged()
+    {
+        OnPropertyChanged(nameof(Rotation));
+        OnPropertyChanged(nameof(WindowWidth));
+        OnPropertyChanged(nameof(WindowHeight));
+    }
+
+    private static double NormalizeRotation(double rotation)
+    {
+        if (!double.IsFinite(rotation))
+        {
+            throw new ArgumentOutOfRangeException(nameof(rotation));
+        }
+
+        return (rotation % 360 + 360) % 360;
+    }
 }

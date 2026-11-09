@@ -10,9 +10,26 @@ public sealed class OverlayWindowService
 
     public void Create(OverlayItemViewModel overlay)
     {
-        var window = new OverlayWindow(overlay);
+        var window = new OverlayWindow(overlay, BeginRotation, EndRotation);
         _windows.Add(overlay.Id, window);
-        window.PositionChanged += (_, _) => overlay.UpdatePosition(window.Position, window.RenderScaling);
+        window.PositionChanged += (_, _) =>
+        {
+            if (window.IsRotationGestureInProgress)
+            {
+                return;
+            }
+
+            if (window.ExpectedProgrammaticPosition is { } expectedPosition)
+            {
+                window.ExpectedProgrammaticPosition = null;
+                if (window.Position == expectedPosition)
+                {
+                    return;
+                }
+            }
+
+            overlay.UpdatePosition(window.Position, window.RenderScaling);
+        };
         Update(overlay);
     }
 
@@ -38,10 +55,7 @@ public sealed class OverlayWindowService
         var position = new PixelPoint(
             (int)Math.Round(windowPosition.X),
             (int)Math.Round(windowPosition.Y));
-        if (window.Position != position)
-        {
-            window.Position = position;
-        }
+        SetWindowPosition(window, position);
 
         if (window.IsVisible != overlay.IsVisible)
         {
@@ -72,5 +86,48 @@ public sealed class OverlayWindowService
         }
 
         _windows.Clear();
+    }
+
+    private void BeginRotation(OverlayItemViewModel overlay)
+    {
+        if (!_windows.TryGetValue(overlay.Id, out var window))
+        {
+            return;
+        }
+
+        window.IsRotationGestureInProgress = true;
+        var scaling = window.RenderScaling;
+        var centerX = window.Position.X / scaling + window.Width / 2;
+        var centerY = window.Position.Y / scaling + window.Height / 2;
+        var size = Math.Ceiling(Math.Sqrt(overlay.Width * overlay.Width + overlay.Height * overlay.Height)) + 2;
+        window.Width = size;
+        window.Height = size;
+        SetWindowPosition(
+            window,
+            new PixelPoint(
+                (int)Math.Round((centerX - size / 2) * scaling),
+                (int)Math.Round((centerY - size / 2) * scaling)));
+    }
+
+    private void EndRotation(OverlayItemViewModel overlay)
+    {
+        if (!_windows.TryGetValue(overlay.Id, out var window))
+        {
+            return;
+        }
+
+        Update(overlay);
+        window.IsRotationGestureInProgress = false;
+    }
+
+    private static void SetWindowPosition(OverlayWindow window, PixelPoint position)
+    {
+        if (window.Position == position)
+        {
+            return;
+        }
+
+        window.ExpectedProgrammaticPosition = position;
+        window.Position = position;
     }
 }
