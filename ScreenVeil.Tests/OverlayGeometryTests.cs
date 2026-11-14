@@ -5,41 +5,44 @@ namespace ScreenVeil.Tests;
 public sealed class OverlayGeometryTests
 {
     [Theory]
-    [InlineData(0, 320, 150)]
-    [InlineData(90, 150, 320)]
-    [InlineData(-90, 150, 320)]
-    [InlineData(45, 333, 333)]
-    public void GetWindowSizeContainsTheRotatedCover(double rotation, double expectedWidth, double expectedHeight)
+    [InlineData(320, 150)]
+    [InlineData(100, 400)]
+    [InlineData(100, 100)]
+    public void WindowContainsCoverAtEveryRotation(double width, double height)
     {
-        var (width, height) = OverlayGeometry.GetWindowSize(320, 150, rotation);
+        var windowSize = OverlayGeometry.GetWindowSize(width, height);
 
-        Assert.Equal(expectedWidth, width);
-        Assert.Equal(expectedHeight, height);
+        for (var rotation = 0; rotation < 360; rotation++)
+        {
+            var radians = rotation * Math.PI / 180;
+            var rotatedWidth = width * Math.Abs(Math.Cos(radians)) + height * Math.Abs(Math.Sin(radians));
+            var rotatedHeight = width * Math.Abs(Math.Sin(radians)) + height * Math.Abs(Math.Cos(radians));
+            Assert.True(windowSize >= rotatedWidth);
+            Assert.True(windowSize >= rotatedHeight);
+        }
     }
 
     [Fact]
     public void GetWindowSizeRejectsNonPositiveDimensions()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => OverlayGeometry.GetWindowSize(0, 150, 0));
-        Assert.Throws<ArgumentOutOfRangeException>(() => OverlayGeometry.GetWindowSize(320, double.NaN, 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => OverlayGeometry.GetWindowSize(0, 150));
+        Assert.Throws<ArgumentOutOfRangeException>(() => OverlayGeometry.GetWindowSize(320, double.NaN));
     }
 
     [Theory]
-    [InlineData(0, 1)]
-    [InlineData(45, 1)]
-    [InlineData(45, 1.5)]
-    [InlineData(135, 2)]
-    public void WindowAndCoverPositionsRoundTrip(double rotation, double renderScaling)
+    [InlineData(1)]
+    [InlineData(1.5)]
+    [InlineData(2)]
+    public void WindowAndCoverPositionsRoundTrip(double renderScaling)
     {
         const double x = 80;
         const double y = 120;
-        var windowPosition = OverlayGeometry.GetWindowPosition(x, y, 320, 150, rotation, renderScaling);
+        var windowPosition = OverlayGeometry.GetWindowPosition(x, y, 320, 150, renderScaling);
         var coverPosition = OverlayGeometry.GetCoverPosition(
             windowPosition.X,
             windowPosition.Y,
             320,
             150,
-            rotation,
             renderScaling);
 
         Assert.Equal(x, coverPosition.X, 10);

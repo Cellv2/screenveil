@@ -76,6 +76,6 @@ dotnet test ScreenVeil.sln
 
 ## Platform Notes
 
-The app uses Avalonia windowing for its shared UI and native window manager operations for movement, resizing, and topmost behavior. Linux X11 is the initial target. Ovals and rotated covers need window transparency support (such as an X11 compositor) to show the desktop around their edges. Wayland compositors may restrict absolute positioning, always-on-top windows, global shortcuts, and click-through behavior; these capabilities need testing per compositor and are not implemented yet. In WSLg, a Linux app's topmost request may not keep it above native Windows apps; use the native Windows build above for that behavior.
+The app uses Avalonia windowing for its shared UI and native window manager operations for movement, resizing, and topmost behavior. Linux X11 is the initial target. Covers need window transparency support (such as an X11 compositor) to show the desktop around their edges. To keep rotation smooth, the transparent window extends beyond the cover and may intercept clicks in that area. Wayland compositors may restrict absolute positioning, always-on-top windows, global shortcuts, and click-through behavior; these capabilities need testing per compositor and are not implemented yet. In WSLg, a Linux app's topmost request may not keep it above native Windows apps; use the native Windows build above for that behavior.
 
 Study mode, locking, persistence, workspaces, custom color entry, opacity, global shortcuts, click-through, and tray integration are planned for later phases.

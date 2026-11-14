@@ -11,10 +11,7 @@ public partial class OverlayWindow : Window
     private RotationGesture? _rotationGesture;
     private ResizeGesture? _resizeGesture;
     private IPointer? _capturedPointer;
-    private Action<OverlayItemViewModel> _onRotationStarted = static _ => { };
-    private Action<OverlayItemViewModel> _onRotationEnded = static _ => { };
 
-    internal bool IsRotationGestureInProgress { get; set; }
     internal PixelPoint? ExpectedProgrammaticPosition { get; set; }
 
     public OverlayWindow()
@@ -22,15 +19,10 @@ public partial class OverlayWindow : Window
         InitializeComponent();
     }
 
-    public OverlayWindow(
-        OverlayItemViewModel overlay,
-        Action<OverlayItemViewModel> onRotationStarted,
-        Action<OverlayItemViewModel> onRotationEnded) : this()
+    public OverlayWindow(OverlayItemViewModel overlay) : this()
     {
         DataContext = overlay;
         Title = overlay.Name;
-        _onRotationStarted = onRotationStarted;
-        _onRotationEnded = onRotationEnded;
     }
 
     private void OnMovePointerPressed(object? sender, PointerPressedEventArgs e)
@@ -85,7 +77,6 @@ public partial class OverlayWindow : Window
         var pointerAngle = Math.Atan2(pointerPosition.Y - center.Y, pointerPosition.X - center.X);
         _rotationGesture = new RotationGesture(center, pointerAngle, overlay.Rotation);
         _resizeGesture = null;
-        _onRotationStarted(overlay);
         CapturePointer(e.Pointer);
         e.Handled = true;
     }
@@ -127,7 +118,6 @@ public partial class OverlayWindow : Window
             var pointerAngle = Math.Atan2(pointerPosition.Y - rotation.Center.Y, pointerPosition.X - rotation.Center.X);
             var delta = NormalizeRadians(pointerAngle - rotation.StartPointerAngle);
             overlay.SetRotation(rotation.StartRotation + delta * 180 / Math.PI);
-            _onRotationEnded(overlay);
         }
 
         e.Pointer.Capture(null);

@@ -7,14 +7,13 @@ public static class OverlayGeometry
         double y,
         double width,
         double height,
-        double rotation,
         double renderScaling)
     {
         ValidateRenderScaling(renderScaling);
-        var (windowWidth, windowHeight) = GetWindowSize(width, height, rotation);
+        var windowSize = GetWindowSize(width, height);
         return (
-            x + (width - windowWidth) * renderScaling / 2,
-            y + (height - windowHeight) * renderScaling / 2);
+            x + (width - windowSize) * renderScaling / 2,
+            y + (height - windowSize) * renderScaling / 2);
     }
 
     public static (double X, double Y) GetCoverPosition(
@@ -22,17 +21,16 @@ public static class OverlayGeometry
         double windowY,
         double width,
         double height,
-        double rotation,
         double renderScaling)
     {
         ValidateRenderScaling(renderScaling);
-        var (windowWidth, windowHeight) = GetWindowSize(width, height, rotation);
+        var windowSize = GetWindowSize(width, height);
         return (
-            windowX + (windowWidth - width) * renderScaling / 2,
-            windowY + (windowHeight - height) * renderScaling / 2);
+            windowX + (windowSize - width) * renderScaling / 2,
+            windowY + (windowSize - height) * renderScaling / 2);
     }
 
-    public static (double Width, double Height) GetWindowSize(double width, double height, double rotation)
+    public static double GetWindowSize(double width, double height)
     {
         if (!double.IsFinite(width) || width <= 0)
         {
@@ -44,22 +42,9 @@ public static class OverlayGeometry
             throw new ArgumentOutOfRangeException(nameof(height));
         }
 
-        if (!double.IsFinite(rotation))
-        {
-            throw new ArgumentOutOfRangeException(nameof(rotation));
-        }
-
-        var radians = rotation * Math.PI / 180;
-        var absoluteCosine = SnapUnit(Math.Abs(Math.Cos(radians)));
-        var absoluteSine = SnapUnit(Math.Abs(Math.Sin(radians)));
-
-        return (
-            Math.Ceiling(width * absoluteCosine + height * absoluteSine),
-            Math.Ceiling(width * absoluteSine + height * absoluteCosine));
+        // A diagonal-sized surface contains the cover at every angle without resizing during rotation.
+        return Math.Ceiling(Math.Sqrt(width * width + height * height)) + 2;
     }
-
-    private static double SnapUnit(double value) =>
-        value < 1e-12 ? 0 : Math.Abs(1 - value) < 1e-12 ? 1 : value;
 
     private static void ValidateRenderScaling(double renderScaling)
     {

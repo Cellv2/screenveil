@@ -53,8 +53,8 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
     public double Width => _configuration.Width;
     public double Height => _configuration.Height;
     public double Rotation => _rotationPreview ?? _configuration.Rotation;
-    public double WindowWidth => OverlayGeometry.GetWindowSize(Width, Height, Rotation).Width;
-    public double WindowHeight => OverlayGeometry.GetWindowSize(Width, Height, Rotation).Height;
+    public double WindowWidth => OverlayGeometry.GetWindowSize(Width, Height);
+    public double WindowHeight => WindowWidth;
     public IBrush Background => new SolidColorBrush(Color.Parse(_configuration.Color));
     public IReadOnlyList<OverlayColorOption> Palette => Colors;
     public IReadOnlyList<OverlayShape> Shapes { get; } = [OverlayShape.Box, OverlayShape.Oval];
@@ -104,7 +104,6 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
             position.Y,
             Width,
             Height,
-            Rotation,
             renderScaling);
         var updated = _configuration with
         {
@@ -147,11 +146,7 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
             return;
         }
 
-        UpdateConfiguration(
-            updated,
-            nameof(Rotation),
-            nameof(WindowWidth),
-            nameof(WindowHeight));
+        UpdateConfiguration(updated, nameof(Rotation));
     }
 
     public void PreviewRotation(double rotation)
@@ -185,12 +180,7 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private void NotifyRotationChanged()
-    {
-        OnPropertyChanged(nameof(Rotation));
-        OnPropertyChanged(nameof(WindowWidth));
-        OnPropertyChanged(nameof(WindowHeight));
-    }
+    private void NotifyRotationChanged() => OnPropertyChanged(nameof(Rotation));
 
     private static double NormalizeRotation(double rotation)
     {

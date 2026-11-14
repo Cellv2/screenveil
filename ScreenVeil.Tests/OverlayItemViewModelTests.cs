@@ -1,3 +1,4 @@
+using Avalonia;
 using ScreenVeil.App;
 using ScreenVeil.Core.Models;
 
@@ -73,5 +74,34 @@ public sealed class OverlayItemViewModelTests
         Assert.Equal(0, overlay.Rotation);
         Assert.Equal(0, overlay.Configuration.Rotation);
         Assert.Equal(0, changeCount);
+    }
+
+    [Theory]
+    [InlineData(OverlayShape.Box)]
+    [InlineData(OverlayShape.Oval)]
+    public void RotationKeepsWindowBoundsAndCoverPositionStable(OverlayShape shape)
+    {
+        var changes = new List<string?>();
+        var overlay = new OverlayItemViewModel(
+            new OverlayConfiguration { Shape = shape, X = 100, Y = 200 },
+            _ => { },
+            _ => { });
+        overlay.PropertyChanged += (_, e) => changes.Add(e.PropertyName);
+        var size = overlay.WindowWidth;
+        var position = OverlayGeometry.GetWindowPosition(overlay.X, overlay.Y, overlay.Width, overlay.Height, 1);
+
+        overlay.PreviewRotation(45);
+        overlay.SetRotation(45);
+
+        Assert.Equal(size, overlay.WindowWidth);
+        Assert.Equal(size, overlay.WindowHeight);
+        Assert.Equal(position, OverlayGeometry.GetWindowPosition(overlay.X, overlay.Y, overlay.Width, overlay.Height, 1));
+        Assert.DoesNotContain(nameof(overlay.WindowWidth), changes);
+        Assert.DoesNotContain(nameof(overlay.WindowHeight), changes);
+
+        overlay.UpdatePosition(new PixelPoint(50, 75), 1.5);
+        var actualPosition = OverlayGeometry.GetWindowPosition(overlay.X, overlay.Y, overlay.Width, overlay.Height, 1.5);
+        Assert.Equal(50, actualPosition.X, 10);
+        Assert.Equal(75, actualPosition.Y, 10);
     }
 }
