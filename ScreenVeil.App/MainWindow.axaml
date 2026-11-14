@@ -47,45 +47,109 @@
                                 BorderBrush="#303732"
                                 BorderThickness="1"
                                 CornerRadius="7">
-                            <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto">
+                            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+                                <Grid.Resources>
+                                    <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="#3A423C" />
+                                    <SolidColorBrush x:Key="ComboBoxBorderBrushPointerOver" Color="#717B74" />
+                                    <SolidColorBrush x:Key="ComboBoxBackgroundPressed" Color="#343B36" />
+                                    <SolidColorBrush x:Key="ComboBoxBorderBrushPressed" Color="#717B74" />
+                                    <SolidColorBrush x:Key="ComboBoxDropDownGlyphForeground" Color="#F3F4EF" />
+                                    <SolidColorBrush x:Key="ComboBoxDropDownGlyphForegroundFocused" Color="#F3F4EF" />
+                                    <SolidColorBrush x:Key="ComboBoxDropDownGlyphForegroundFocusedPressed" Color="#F3F4EF" />
+                                </Grid.Resources>
                                 <StackPanel Spacing="4" VerticalAlignment="Center">
                                     <TextBlock FontWeight="SemiBold" Foreground="#F3F4EF" Text="{Binding Name}" />
                                     <TextBlock FontSize="11" Foreground="#9BA49D" Text="{Binding StatusText}" />
                                 </StackPanel>
                                 <ComboBox Grid.Column="1"
-                                          Width="106"
+                                          Width="62"
+                                          MinWidth="0"
                                           Margin="8,0,0,0"
                                           VerticalAlignment="Center"
                                           Background="#2D332F"
                                           BorderBrush="#485149"
+                                          BorderThickness="1"
                                           Foreground="#F3F4EF"
+                                          AutomationProperties.Name="Color"
+                                          ToolTip.Tip="Color"
                                           ItemsSource="{Binding Palette}"
                                           SelectedItem="{Binding SelectedColor, Mode=TwoWay}">
+                                    <ComboBox.SelectionBoxItemTemplate>
+                                        <DataTemplate x:DataType="app:OverlayColorOption">
+                                            <Border Width="16" Height="16" Background="{Binding Brush}" BorderBrush="#9BA49D" BorderThickness="1" CornerRadius="3" />
+                                        </DataTemplate>
+                                    </ComboBox.SelectionBoxItemTemplate>
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate x:DataType="app:OverlayColorOption">
                                             <StackPanel Orientation="Horizontal" Spacing="7">
-                                                <Border Width="12" Height="12" Background="{Binding Brush}" CornerRadius="3" />
-                                                <TextBlock VerticalAlignment="Center" Foreground="#F3F4EF" Text="{Binding Name}" />
+                                                <Border Width="12" Height="12" Background="{Binding Brush}" BorderBrush="#9BA49D" BorderThickness="1" CornerRadius="3" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <Button Grid.Column="2"
-                                        Margin="6,0,0,0"
-                                        Padding="9,5"
-                                        VerticalAlignment="Center"
-                                        Background="#343B36"
-                                        Command="{Binding ToggleVisibilityCommand}"
-                                        Content="{Binding VisibilityLabel}"
-                                        Foreground="#F3F4EF" />
+                                <Grid Grid.Column="2" Margin="6,0,0,0" VerticalAlignment="Center">
+                                    <ComboBox Width="56"
+                                              MinWidth="0"
+                                              Background="#2D332F"
+                                              BorderBrush="#485149"
+                                              BorderThickness="1"
+                                              Foreground="#F3F4EF"
+                                              AutomationProperties.Name="Shape"
+                                              ToolTip.Tip="Shape"
+                                              ItemsSource="{Binding Shapes}"
+                                              SelectedItem="{Binding SelectedShape, Mode=TwoWay}">
+                                        <ComboBox.SelectionBoxItemTemplate>
+                                            <DataTemplate>
+                                                <Border Width="16" Height="16" />
+                                            </DataTemplate>
+                                        </ComboBox.SelectionBoxItemTemplate>
+                                    </ComboBox>
+                                    <Grid Width="16" Height="16" Margin="10,0,0,0" HorizontalAlignment="Left" IsHitTestVisible="False">
+                                        <Rectangle Width="14" Height="14" Stroke="#F3F4EF" StrokeThickness="1.5" IsVisible="{Binding IsBox}" />
+                                        <Ellipse Width="14" Height="14" Stroke="#F3F4EF" StrokeThickness="1.5" IsVisible="{Binding IsOval}" />
+                                    </Grid>
+                                </Grid>
                                 <Button Grid.Column="3"
                                         Margin="6,0,0,0"
-                                        Padding="9,5"
+                                        Width="36"
+                                        Height="36"
+                                        MinWidth="0"
+                                        Padding="0"
                                         VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Background="#343B36"
+                                        Command="{Binding ToggleVisibilityCommand}"
+                                        AutomationProperties.Name="{Binding VisibilityLabel}"
+                                        ToolTip.Tip="{Binding VisibilityLabel}"
+                                        Foreground="#F3F4EF">
+                                    <Grid Width="18" Height="18">
+                                        <Path Data="M 1,9 C 3.5,5 6,3.5 9,3.5 C 12,3.5 14.5,5 17,9 C 14.5,13 12,14.5 9,14.5 C 6,14.5 3.5,13 1,9 Z"
+                                              Stroke="#F3F4EF" StrokeThickness="1.5" />
+                                        <Ellipse Width="5" Height="5" Stroke="#F3F4EF" StrokeThickness="1.5" />
+                                        <Path Data="M 2,2 L 16,16" Stroke="#F3F4EF" StrokeThickness="1.5" IsVisible="{Binding !IsVisible}" />
+                                    </Grid>
+                                </Button>
+                                <Button Grid.Column="4"
+                                        Margin="6,0,0,0"
+                                        Width="36"
+                                        Height="36"
+                                        MinWidth="0"
+                                        Padding="0"
+                                        VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
                                         Background="#3A2D2A"
                                         Command="{Binding DeleteCommand}"
-                                        Content="Delete"
-                                        Foreground="#FFD3C8" />
+                                        AutomationProperties.Name="Delete cover"
+                                        ToolTip.Tip="Delete cover"
+                                        Foreground="#FFD3C8">
+                                    <Path Width="18" Height="18"
+                                          Data="M 3,5 L 15,5 M 7,3 L 11,3 M 5,5 L 6,15 L 12,15 L 13,5 M 8,7 L 8,13 M 10,7 L 10,13"
+                                          Stroke="#FFD3C8"
+                                          StrokeThickness="1.5" />
+                                </Button>
                             </Grid>
                         </Border>
                     </DataTemplate>

@@ -185,8 +185,12 @@ public partial class OverlayWindow : Window
             height);
     }
 
-    private Point GetScreenPosition(Point windowPosition) =>
-        new(Position.X / RenderScaling + windowPosition.X, Position.Y / RenderScaling + windowPosition.Y);
+    private Point GetScreenPosition(Point windowPosition)
+    {
+        // The native move can produce pointer events before PositionChanged arrives.
+        var position = ExpectedProgrammaticPosition ?? Position;
+        return new Point(position.X / RenderScaling + windowPosition.X, position.Y / RenderScaling + windowPosition.Y);
+    }
 
     private Point GetWindowCenter() =>
         new(Position.X / RenderScaling + Width / 2, Position.Y / RenderScaling + Height / 2);

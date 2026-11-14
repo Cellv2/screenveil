@@ -27,7 +27,8 @@
             </Grid.RenderTransform>
             <Border Background="{Binding Background}"
                     BorderBrush="#4A514C"
-                    BorderThickness="1">
+                    BorderThickness="1"
+                    IsVisible="{Binding IsBox}">
                 <Grid>
                     <Border Background="Transparent" PointerPressed="OnMovePointerPressed" />
                     <Border Width="6" HorizontalAlignment="Left" Background="Transparent" Tag="West" PointerPressed="OnResizePointerPressed" />
@@ -67,6 +68,52 @@
                     </Border>
                 </Grid>
             </Border>
+            <Grid IsVisible="{Binding IsOval}">
+                <Ellipse Fill="{Binding Background}"
+                         Stroke="#4A514C"
+                         StrokeThickness="1"
+                         PointerPressed="OnMovePointerPressed" />
+                <Border Width="10" Height="28" HorizontalAlignment="Left" Background="Transparent" Tag="West" PointerPressed="OnResizePointerPressed" />
+                <Border Width="10" Height="28" HorizontalAlignment="Right" Background="Transparent" Tag="East" PointerPressed="OnResizePointerPressed" />
+                <Border Width="28" Height="10" VerticalAlignment="Top" Background="Transparent" Tag="North" PointerPressed="OnResizePointerPressed" />
+                <Border Width="28" Height="10" VerticalAlignment="Bottom" Background="Transparent" Tag="South" PointerPressed="OnResizePointerPressed" />
+                <Grid ColumnDefinitions="3*,4*,3*" RowDefinitions="3*,4*,3*">
+                    <Border Width="14" Height="14" Background="Transparent" Tag="NorthWest" PointerPressed="OnResizePointerPressed" />
+                    <Border Grid.Column="2" Width="14" Height="14" Background="Transparent" Tag="NorthEast" PointerPressed="OnResizePointerPressed" />
+                    <Border Grid.Row="2" Width="14" Height="14" Background="Transparent" Tag="SouthWest" PointerPressed="OnResizePointerPressed" />
+                    <Border Grid.Row="2"
+                            Grid.Column="2"
+                            Width="22"
+                            Height="22"
+                            Background="#252A27"
+                            BorderBrush="#717B74"
+                            BorderThickness="1"
+                            CornerRadius="11"
+                            Tag="SouthEast"
+                            ToolTip.Tip="Drag to resize"
+                            PointerPressed="OnResizePointerPressed">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Foreground="#F3F4EF" Text="+" />
+                    </Border>
+                </Grid>
+                <Border Width="22"
+                        Height="22"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0,14,0,0"
+                        Background="#252A27"
+                        BorderBrush="#717B74"
+                        BorderThickness="1"
+                        CornerRadius="11"
+                        ToolTip.Tip="Drag to rotate"
+                        PointerPressed="OnRotatePointerPressed">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="11"
+                               FontWeight="Bold"
+                               Foreground="#F3F4EF"
+                               Text="R" />
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

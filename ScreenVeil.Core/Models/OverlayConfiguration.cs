@@ -1,10 +1,17 @@
 namespace ScreenVeil.Core.Models;
 
+public enum OverlayShape
+{
+    Box,
+    Oval
+}
+
 public sealed record OverlayConfiguration
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; init; } = "Cover";
     public string Color { get; init; } = "#090B0A";
+    public OverlayShape Shape { get; init; } = OverlayShape.Box;
     public bool IsVisible { get; init; } = true;
     public double X { get; init; } = 80;
     public double Y { get; init; } = 80;

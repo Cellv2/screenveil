@@ -59,9 +59,12 @@ In Explorer, copy the published folder to a location on a Windows drive, then ru
 
 - Create multiple independent, borderless, always-on-top cover windows.
 - Drag covers to move them, resize from any edge or corner, and rotate with the top handle.
+- Choose a box or oval shape for each cover. Ovals resize from the four sides or diagonal points on their curve, including the visible + handle.
 - Choose black, white, moss, or coral for each cover.
 - Show or hide covers individually, show or hide all, and delete individual covers.
 - Keep the control window focused when covers are shown where the desktop window manager honors non-activating windows.
+
+Each cover's controls show its color and shape, followed by visibility and delete buttons.
 
 Cover state is currently in memory only. Closing the app discards the arrangement.
 
@@ -73,6 +76,6 @@ dotnet test ScreenVeil.sln
 
 ## Platform Notes
 
-The app uses Avalonia windowing for its shared UI and native window manager operations for movement, resizing, and topmost behavior. Linux X11 is the initial target. Wayland compositors may restrict absolute positioning, always-on-top windows, global shortcuts, and click-through behavior; these capabilities need testing per compositor and are not implemented yet. In WSLg, a Linux app's topmost request may not keep it above native Windows apps; use the native Windows build above for that behavior.
+The app uses Avalonia windowing for its shared UI and native window manager operations for movement, resizing, and topmost behavior. Linux X11 is the initial target. Ovals and rotated covers need window transparency support (such as an X11 compositor) to show the desktop around their edges. Wayland compositors may restrict absolute positioning, always-on-top windows, global shortcuts, and click-through behavior; these capabilities need testing per compositor and are not implemented yet. In WSLg, a Linux app's topmost request may not keep it above native Windows apps; use the native Windows build above for that behavior.
 
 Study mode, locking, persistence, workspaces, custom color entry, opacity, global shortcuts, click-through, and tray integration are planned for later phases.

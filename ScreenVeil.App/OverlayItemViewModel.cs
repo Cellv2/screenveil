@@ -57,11 +57,24 @@ public sealed class OverlayItemViewModel : INotifyPropertyChanged
     public double WindowHeight => OverlayGeometry.GetWindowSize(Width, Height, Rotation).Height;
     public IBrush Background => new SolidColorBrush(Color.Parse(_configuration.Color));
     public IReadOnlyList<OverlayColorOption> Palette => Colors;
+    public IReadOnlyList<OverlayShape> Shapes { get; } = [OverlayShape.Box, OverlayShape.Oval];
+    public bool IsBox => _configuration.Shape == OverlayShape.Box;
+    public bool IsOval => _configuration.Shape == OverlayShape.Oval;
     public RelayCommand ToggleVisibilityCommand { get; }
     public RelayCommand DeleteCommand { get; }
     public string VisibilityLabel => IsVisible ? "Hide" : "Show";
     public string StatusText => IsVisible ? "VISIBLE / TOPMOST REQUESTED" : "HIDDEN";
     public OverlayConfiguration Configuration => _configuration;
+
+    public OverlayShape SelectedShape
+    {
+        get => _configuration.Shape;
+        set => UpdateConfiguration(
+            _configuration with { Shape = value },
+            nameof(SelectedShape),
+            nameof(IsBox),
+            nameof(IsOval));
+    }
 
     public OverlayColorOption SelectedColor
     {
