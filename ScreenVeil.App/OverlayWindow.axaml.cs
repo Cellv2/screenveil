@@ -1,6 +1,8 @@
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using ScreenVeil.Core.Models;
 
 namespace ScreenVeil.App;
 
@@ -11,6 +13,7 @@ public partial class OverlayWindow : Window
     private RotationGesture? _rotationGesture;
     private ResizeGesture? _resizeGesture;
     private IPointer? _capturedPointer;
+    private InputRegionState? _inputRegionState;
 
     internal PixelPoint? ExpectedProgrammaticPosition { get; set; }
 
@@ -23,6 +26,44 @@ public partial class OverlayWindow : Window
     {
         DataContext = overlay;
         Title = overlay.Name;
+        if (OperatingSystem.IsWindows())
+        {
+            overlay.PropertyChanged += OnOverlayPropertyChanged;
+            Opened += (_, _) => UpdateInputRegion();
+            SizeChanged += (_, _) => UpdateInputRegion();
+            ScalingChanged += (_, _) => UpdateInputRegion();
+            Closed += (_, _) => overlay.PropertyChanged -= OnOverlayPropertyChanged;
+        }
+    }
+
+    internal void UpdateInputRegion()
+    {
+        if (!OperatingSystem.IsWindows() || !IsVisible || DataContext is not OverlayItemViewModel overlay ||
+            TryGetPlatformHandle() is not { Handle: var handle } || handle == 0 ||
+            ClientSize.Width <= 0 || ClientSize.Height <= 0)
+        {
+            return;
+        }
+
+        var state = new InputRegionState(
+            overlay.SelectedShape, overlay.Width, overlay.Height, overlay.Rotation, ClientSize, RenderScaling);
+        if (_inputRegionState == state)
+        {
+            return;
+        }
+
+        var polygons = OverlayInputRegion.GetPolygons(
+            state.Shape, state.Width, state.Height, state.Rotation, state.ClientSize, state.Scaling);
+        OverlayInputRegion.Apply(handle, polygons);
+        _inputRegionState = state;
+    }
+
+    private void OnOverlayPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(OverlayItemViewModel.Rotation) or nameof(OverlayItemViewModel.SelectedShape))
+        {
+            UpdateInputRegion();
+        }
     }
 
     private void OnMovePointerPressed(object? sender, PointerPressedEventArgs e)
@@ -211,6 +252,14 @@ public partial class OverlayWindow : Window
         Math.Atan2(Math.Sin(radians), Math.Cos(radians));
 
     private sealed record RotationGesture(Point Center, double StartPointerAngle, double StartRotation);
+
+    private sealed record InputRegionState(
+        OverlayShape Shape,
+        double Width,
+        double Height,
+        double Rotation,
+        Size ClientSize,
+        double Scaling);
 
     private sealed record ResizeGesture(
         WindowEdge Edge,

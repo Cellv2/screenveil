@@ -62,6 +62,8 @@ public sealed class OverlayWindowService
                 window.Hide();
             }
         }
+
+        window.UpdateInputRegion();
     }
 
     public void Remove(Guid id)
